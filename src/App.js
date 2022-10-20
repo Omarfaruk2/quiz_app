@@ -1,59 +1,99 @@
-import React, { useState } from "react";
-import "./App.css";
+import React, { useState } from "react"
+import "./App.css"
+import { useTimer } from 'react-timer-hook'
+
 
 function App() {
-  // Properties
-  const [showResults, setShowResults] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [score, setScore] = useState(0);
+  // -----------------------------------------
+
+
+  function MyTimer({ expiryTimestamp }) {
+    const {
+      seconds,
+      minutes,
+      hours,
+      days,
+      isRunning,
+      start,
+      pause,
+      resume,
+      restart,
+    } = useTimer({ expiryTimestamp, onExpire: () => console.warn('onExpire called') })
+
+
+    return (
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ fontSize: '30px', color: "white", font: "bold" }}>
+          <span>{days}</span>:<span>{hours}</span>:<span>{minutes}</span>:<span>{seconds}</span>
+        </div>
+        {/* <p>{isRunning ? 'Running' : 'Not running'}</p> */}
+
+        {/* <button onClick={() => {
+          // Restarts to 5 minutes timer
+          const time = new Date()
+          time.setSeconds(time.getSeconds() + 300)
+          restart(time)
+        }}>Restart</button>
+         */}
+      </div>
+    )
+  }
+
+
+
+  // Properties-----------------------------------
+  const [showResults, setShowResults] = useState(false)
+  const [currentQuestion, setCurrentQuestion] = useState(0)
+  const [score, setScore] = useState(0)
+
 
   const questions = [
     {
-      text: "What is the capital of America?",
+      text: "What is the capital of India?",
       options: [
-        { id: 0, text: "New York City", isCorrect: false },
-        { id: 1, text: "Boston", isCorrect: false },
-        { id: 2, text: "Santa Fe", isCorrect: false },
-        { id: 3, text: "Washington DC", isCorrect: true },
+        { id: 0, text: "Andhra Pradesh", isCorrect: false },
+        { id: 1, text: "Chhattisgarh", isCorrect: false },
+        { id: 2, text: "Goa", isCorrect: false },
+        { id: 3, text: "New Delhi", isCorrect: true },
       ],
     },
     {
-      text: "What year was the Constitution of America written?",
+      text: "How many country in world?",
       options: [
-        { id: 0, text: "1787", isCorrect: true },
-        { id: 1, text: "1776", isCorrect: false },
-        { id: 2, text: "1774", isCorrect: false },
-        { id: 3, text: "1826", isCorrect: false },
+        { id: 0, text: "195", isCorrect: true },
+        { id: 1, text: "199", isCorrect: false },
+        { id: 2, text: "189", isCorrect: false },
+        { id: 3, text: "190", isCorrect: false },
       ],
     },
     {
-      text: "Who was the second president of the US?",
+      text: "Who made facebook?",
       options: [
-        { id: 0, text: "John Adams", isCorrect: true },
+        { id: 0, text: "Mark Zuckerberg", isCorrect: true },
         { id: 1, text: "Paul Revere", isCorrect: false },
         { id: 2, text: "Thomas Jefferson", isCorrect: false },
         { id: 3, text: "Benjamin Franklin", isCorrect: false },
       ],
     },
     {
-      text: "What is the largest state in the US?",
+      text: "What is big country in the world?",
       options: [
-        { id: 0, text: "California", isCorrect: false },
-        { id: 1, text: "Alaska", isCorrect: true },
-        { id: 2, text: "Texas", isCorrect: false },
-        { id: 3, text: "Montana", isCorrect: false },
+        { id: 0, text: "India", isCorrect: false },
+        { id: 1, text: "Russia", isCorrect: true },
+        { id: 2, text: "US", isCorrect: false },
+        { id: 3, text: "Canada", isCorrect: false },
       ],
     },
     {
-      text: "Which of the following countries DO NOT border the US?",
+      text: "How many vowels in english?",
       options: [
-        { id: 0, text: "Canada", isCorrect: false },
-        { id: 1, text: "Russia", isCorrect: true },
-        { id: 2, text: "Cuba", isCorrect: true },
-        { id: 3, text: "Mexico", isCorrect: false },
+        { id: 0, text: "6", isCorrect: false },
+        { id: 1, text: "5", isCorrect: true },
+        { id: 2, text: "4", isCorrect: true },
+        { id: 3, text: "7", isCorrect: false },
       ],
     },
-  ];
+  ]
 
   // Helper Functions
 
@@ -61,28 +101,37 @@ function App() {
   const optionClicked = (isCorrect) => {
     // Increment the score
     if (isCorrect) {
-      setScore(score + 1);
+      setScore(score + 1)
     }
 
     if (currentQuestion + 1 < questions.length) {
-      setCurrentQuestion(currentQuestion + 1);
+      setCurrentQuestion(currentQuestion + 1)
     } else {
-      setShowResults(true);
+      setShowResults(true)
     }
-  };
+  }
 
   /* Resets the game back to default */
   const restartGame = () => {
-    setScore(0);
-    setCurrentQuestion(0);
-    setShowResults(false);
-  };
+    setScore(0)
+    setCurrentQuestion(0)
+    setShowResults(false)
+  }
 
+
+  // ---------------------------------------------------------
+
+
+  const time = new Date()
+  time.setSeconds(time.getSeconds() + 30) // 1 minutes timer
+
+  console.log(time)
   return (
     <div className="App">
       {/* 1. Header  */}
-      <h1>USA Quiz 🇺🇸</h1>
+      <h1>General Knowledge Quiz</h1>
 
+      {/* <MyTimer expiryTimestamp={time} /> */}
       {/* 2. Current Score  */}
       <h2>Score: {score}</h2>
 
@@ -101,6 +150,11 @@ function App() {
         /* 5. Question Card  */
         <div className="question-card">
           {/* Current Question  */}
+          <MyTimer expiryTimestamp={time} />
+          {
+            console.log(<MyTimer expiryTimestamp={time} />, "time")
+          }
+
           <h2>
             Question: {currentQuestion + 1} out of {questions.length}
           </h2>
@@ -116,13 +170,13 @@ function App() {
                 >
                   {option.text}
                 </li>
-              );
+              )
             })}
           </ul>
         </div>
       )}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
